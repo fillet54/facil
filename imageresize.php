@@ -13,17 +13,15 @@ if (isset($_GET['filename']))
 if (!file_exists($fileName))
     return;
 
-$originalImage = getImage($fileName);
-if (!$originalImage)
-    return;
+/*if (isset($_GET['orientate']) && $_GET['orientate'] == 1)
+    $originalImage = orientateImage($originalImage);
+ */
 
-$originalImage = rotateImage($originalImage, $_GET);
-$newImage = getNewImage($originalImage, $_GET);
 
-imageDestroy($originalImage);
-/* Output Image */
-ImageJPEG($newImage, null, 80);
-imageDestroy($newImage);
+if (isset($_GET['sizex']) && isset($_GET['sizey']))
+{
+    resizeImage($fileName, $_GET['sizex'], $_GET['sizey'], 'browser', null, false, true);
+}
 
 ?>
 

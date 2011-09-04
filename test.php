@@ -1,104 +1,6 @@
 <?php
 
-require('fileutilities.php');
-
-function getImageFromFilename($fileName)
-{
-    $extension = getFileExtension($fileName);
-
-    $image = '';
-    if ($extension == 'JPEG' || $extension == 'JPG')
-    {
-        $image = ImageCreateFromJPEG($fileName);
-    }
-    elseif ($extension == 'GIF')
-    {
-        $image = ImageCreateFromGIF($fileName);
-    }
-    elseif ($extension == 'PNG')
-    {
-        $imageSource = ImageCreateFromPNG($fileName);
-    }
-
-    return $image;
-}
-
-function orientateImage($image)
-{
-    if (function_exists('exif_read_data') && function_exists('imagerotate'))
-    {
-         $exif = exif_read_data($fileName);
-         $orientation = $exif['IFD0']['Orientation'];
-
-         $degrees = 0;
-         if ($orientation == 6)
-         {
-            $degrees = 270;
-         }
-         elseif ($orientation == 8)
-         {
-            $degrees = 90;
-         }
-
-         if ($degress != 0)
-            $image = imagerotate($image, $degrees, 0);
-    }
-
-    return $image;
-}
-
-// Crop an image to aspect ratio
-function getCroppedAspectSize($sizex, $sizey, $aspect)
-{
-    if ($sizex < $sizey*$aspect)
-    {
-        $sizey = round($sizex/$aspect);
-    }
-    else
-    {
-        $sizex = round($sizey*$aspect);
-    }
-
-    return array($sizex, $sizey); 
-}
-
-function getScaledSize($sizex, $sizey, $size)
-{
-    $scalex = $sizex / $size;
-    $scaley = $sizey / $size;
-
-    if ($scalex > $scaley)
-    {
-        
-        $sizex = $size;
-        $sizey = round($sizey * (1 / $scalex));
-    }
-    else
-    {
-        $sizex = round($sizex * (1 / $scaley));
-        $sizey = $size;
-    }
-
-    return array($sizex, $sizey); 
-}
-
-function outputImage($image, $imageType, $file)
-{
-    switch ($imageType)
-    {
-        case IMAGETYPE_GIF:
-            imagegif($image, $file);
-            break;
-        case IMAGETYPE_JPEG:
-            imagejpeg($image, $file);
-            break;
-        case IMAGETYPE_PNG:
-            imagepng($image, $file);
-            break;
-        default:
-            return false;
-    }
-}
+include('imageutilities.php');
 
 function resizeImage($file, $width = 0, $height = 0, $output = 'return', $outputFile = null, $proportional = false, $crop = false)
 {
@@ -179,11 +81,11 @@ function resizeImage($file, $width = 0, $height = 0, $output = 'return', $output
     switch (strtolower($output)) {
         case 'browser':
             header('Content-type: ' . image_type_to_mime_type($imageType));
-            outputImage($image_resized, $imageType, null, 100);
+            outputImage($image_resized, $imageType, null);
             break;
         case 'browser_and_file':
             header('Content-type: ' . image_type_to_mime_type($imageType));
-            outputImage($image_resized, $imageType, null, 100);
+            outputImage($image_resized, $imageType, null);
 
             if ($outputFile)
                 outputImage($image_resized, $imageType, $outputFile);
@@ -201,3 +103,22 @@ function resizeImage($file, $width = 0, $height = 0, $output = 'return', $output
     return true;
 }
 
+function outputImage($image, $imageType, $file)
+{
+    switch ($imageType)
+    {
+        case IMAGETYPE_GIF:
+            imagegif($image, $file);
+            break;
+        case IMAGETYPE_JPEG:
+            imagejpeg($image, $file);
+            break;
+        case IMAGETYPE_PNG:
+            imagepng($image, $file);
+            break;
+        default:
+            return false;
+    }
+}
+
+resizeImage($_GET['filename'], $_GET['width'], $_GET['height'], 'browser', null, false, true);

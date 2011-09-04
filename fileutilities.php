@@ -91,7 +91,7 @@ function getThumbnailUrl($filePath)
         }            
      }
 
-     return $image;
+     return urlencode($image);
 }       
 
 function getFirstImageInDir($filePath)

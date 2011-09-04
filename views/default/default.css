@@ -1,0 +1,23 @@
+div.gallery-content
+{
+    width: 900px;
+}
+
+div.directory
+{
+    float: left;
+}
+
+div.image
+{
+    float: left;
+    padding: 3px;
+}
+
+a img 
+{
+    text-decoration: none;
+    border: 0 none;
+}
+
+
