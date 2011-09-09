@@ -7,17 +7,23 @@
 <body>
     <?php 
     
-    $FACIL_ROOT = '/home/phillip/Sites/default/gallery/';
+    $FACIL_ROOT = realpath('.') . '/';
     
     include("fileutilities.php");
 
     $baseDir = "photos/";
+    $currentDir = "";
     if(isset($_GET['dir']))
-        $currentDir =  $_GET['dir'] . '/';
-    else
-        $currentDir = "";
+       $currentDir = $_GET['dir'] . '/';
 
 
+    /* Check for invalid file path */
+    if (!filePathOkFor($FACIL_ROOT . $baseDir . $currentDir))
+    { ?>
+       <h1>Invalid Path</h1>
+<?php
+       exit;
+    }
 
     // INPUT CONFIG FILES 
     //
