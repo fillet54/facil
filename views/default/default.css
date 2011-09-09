@@ -107,10 +107,19 @@ div.asset img
    font-size: 11px;
 }
 
-header h1
+#header-content
 {
    width: 80%;
    margin: auto;
+}
+
+#header-name
+{
+   display: table;
+}
+
+header h1
+{
    font-family: "Times New Roman";
    letter-spacing: -4px;
    font-size: 60px;
@@ -118,9 +127,8 @@ header h1
 
 header h2
 {
-   width: 80%;
-   margin: auto;
-   color: #ccc;
+   text-align: right;
+   color: #999;
 }
 
 header

@@ -9,8 +9,12 @@
     <body>
 
    <header>
-      <h1>Gomez Galleries</h1>
-      <h2>by Phil Gomez</h2>
+      <div id='header-content'>
+         <div id='header-name'>
+            <h1>Gomez Galleries</h1>
+            <h2>by Phil Gomez</h2>
+         </div>
+      </div>
    </header>
 
 
