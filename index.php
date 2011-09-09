@@ -4,7 +4,6 @@
     include("header.php")
 ?>
 
-<body>
     <?php 
     
     $FACIL_ROOT = realpath('.') . '/';

@@ -107,5 +107,29 @@ div.asset img
    font-size: 11px;
 }
 
+header h1
+{
+   width: 80%;
+   margin: auto;
+   font-family: "Times New Roman";
+   letter-spacing: -4px;
+   font-size: 60px;
+}
+
+header h2
+{
+   width: 80%;
+   margin: auto;
+   color: #ccc;
+}
+
+header
+{
+   width: 100%;
+   margin: 10px auto 5px auto;
+   border-bottom: 1px solid #ccc;
+   padding-bottom: 5px;
+}
+
 
 
