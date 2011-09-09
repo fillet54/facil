@@ -1,5 +1,15 @@
 <?php
 
+function filePathOkFor($filePath)
+{
+   $currentPath = realpath($filePath) . '/';
+
+   if ($currentPath == $filePath)
+      return TRUE;
+   else
+      return FALSE;
+}
+
 function getDirectories($filePath)
 {
     $directories = array();    
