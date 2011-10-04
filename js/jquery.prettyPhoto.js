@@ -43,7 +43,7 @@
 								<div class="pp_content"> \
 									<div class="pp_loaderIcon"></div> \
 									<div class="pp_fade"> \
-										<a href="#" class="pp_expand" title="Expand the image">Expand</a> \
+										<a href="#" id="pg_expand" class="pp_expand" title="Expand the image">Expand</a> \
 										<div class="pp_hoverContainer"> \
 											<a class="pp_next" href="#">next</a> \
 											<a class="pp_previous" href="#">previous</a> \
@@ -246,6 +246,9 @@
 						if(isSet && pp_images[set_position - 1]) prevImage.src = pp_images[set_position - 1];
 
 						$pp_pic_holder.find('#pp_full_res')[0].innerHTML = settings.image_markup.replace(/{path}/g,pp_images[set_position]);
+                  
+                  // Instead of expanding in the light box i would rather just open the source image for download
+                  $pp_pic_holder.find('#pg_expand').attr('href', pp_images[set_position]);
 
 						imgPreloader.onload = function(){
 							// Fit item to viewport
@@ -827,21 +830,6 @@
 
 			$('a.pp_close').bind('click',function(){ $.prettyPhoto.close(); return false; });
 
-			$('a.pp_expand').bind('click',function(e){
-				// Expand the image
-				if($(this).hasClass('pp_expand')){
-					$(this).removeClass('pp_expand').addClass('pp_contract');
-					doresize = false;
-				}else{
-					$(this).removeClass('pp_contract').addClass('pp_expand');
-					doresize = true;
-				};
-			
-				_hideContent(function(){ $.prettyPhoto.open(); });
-		
-				return false;
-			});
-		
 			$pp_pic_holder.find('.pp_previous, .pp_nav .pp_arrow_previous').bind('click',function(){
 				$.prettyPhoto.changePage('previous');
 				$.prettyPhoto.stopSlideshow();
