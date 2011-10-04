@@ -12,9 +12,9 @@
 
 <?php   foreach ($files as $file) { ?>
             <div class='image asset'>
-                <a href='<?php print($baseDir . $currentDir . $file); ?>'>
+                <a href='<?php print($baseDir . $currentDir . $file); ?>' title='<?php print($file); ?>' rel='prettyPhoto[gallery]'>
                     <img src='imageresize.php?filename=<?php print(getThumbnailUrl($baseDir. $currentDir . $file)); ?>&sizex=200&sizey=130' />
-                    <p><?php print($file); ?></p>
+                     <p><?php print($file); ?></p>
                 </a>
             </div>
 <?php   } ?>
