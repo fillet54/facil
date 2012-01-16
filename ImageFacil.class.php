@@ -21,6 +21,11 @@ class ImageFacil
       $this->_image->thumbnailImage($columns, $rows);
    }
 
+   public function cropThumbnailImage($columns, $rows)
+   {
+      $this->_image->cropThumbnailImage($columns, $rows);
+   }
+
    public function save ($filename)
    {
       $this->_image->writeImage($filename);

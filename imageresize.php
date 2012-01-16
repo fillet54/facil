@@ -21,7 +21,7 @@ if (!file_exists($filename))
 if (isset($_GET['sizex']) && isset($_GET['sizey']))
 {
    $image = new ImageFacil ($filename);
-   $image->thumbnailImage($_GET['sizex'], $_GET['sizey']);
+   $image->cropThumbnailImage($_GET['sizex'], $_GET['sizey']);
 
    header('Content-type: image/jpeg');
    echo $image; 

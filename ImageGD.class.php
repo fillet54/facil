@@ -65,7 +65,23 @@ class ImageGD
       }
    }
 
-   public function resizeImage ($columns, $rows)
+   public function cropImage ($columns, $rows)
+   {
+      $aspect = $columns/$rows;
+      list($columns_old, $rows_old) = $this->getCroppedAspectSize($this->_columns, $this->_rows, $aspect);
+
+      # Center the crop
+      # TODO
+      $columns_center = round($this->_columns/2);
+      $rows_center = round($this->_rows/2);
+
+      $columns_old_origin = $columns_center - round($columns_old/2);
+      $rows_old_origin = $rows_center - round($rows_old/2);
+
+      $this->resizeImage($columns_old, $rows_old, $columns, $rows, $columns_old_origin, $rows_old_origin);
+   }
+
+   public function scaleImage ($columns, $rows)
    {
       if ($rows == 0)
          $rows = $this->getScaledRows($columns);
@@ -73,16 +89,10 @@ class ImageGD
       if ($columns == 0)
          $columns = $this->getScaledColumns($rows);
 
-      $newSrc = $this->getResizedSrc($columns, $rows);
-      imagecopyresampled ($newSrc, $this->_src, 0, 0, 0, 0, $columns, $rows, $this->_columns, $this->_rows);
-
-      # Set the new properties
-      $this->_src = $newSrc;
-      $this->_columns = $columns;
-      $this->_rows = $rows;
+      $this->resizeImage($this->_columns, $this->_rows, $columns, $rows);
    }
 
-   public function __toString()
+      public function __toString()
    {
       ob_start();
          switch ($this->_type)
@@ -107,7 +117,23 @@ class ImageGD
 
    public function thumbnailImage ($columns, $rows)
    {
-      $this->resizeImage($columns, $rows);
+      $this->scaleImage($columns, $rows);
+   }
+
+   public function cropThumbnailImage ($columns, $rows)
+   {
+      $this->cropImage($columns, $rows);
+   }
+   
+   private function resizeImage ($columns_old, $rows_old, $columns_new, $rows_new, $columns_old_origin = 0, $rows_old_origin = 0)
+   {
+      $newSrc = $this->getResizedSrc($columns_new, $rows_new);
+      imagecopyresampled ($newSrc, $this->_src, 0, 0, $columns_old_origin, $rows_old_origin, $columns_new, $rows_new, $columns_old, $rows_old);
+
+      # Set the new properties
+      $this->_src = $newSrc;
+      $this->_columns = $columns;
+      $this->_rows = $rows;
    }
 
    private function getResizedSrc ($columns, $rows)
@@ -144,6 +170,16 @@ class ImageGD
       }
 
       return $resizedSrc;
+   }
+
+   private function getCroppedAspectSize ($columns, $rows, $aspect)
+   {
+      if ($columns < $rows*$aspect)
+         $rows = round($columns/$aspect);
+      else
+         $columns = round($rows*$aspect);
+
+      return array($columns, $rows);
    }
 
    private function getScaledColumns ($rows)
