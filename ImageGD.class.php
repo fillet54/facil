@@ -71,10 +71,8 @@ class ImageGD
       list($columns_old, $rows_old) = $this->getCroppedAspectSize($this->_columns, $this->_rows, $aspect);
 
       # Center the crop
-      # TODO
       $columns_center = round($this->_columns/2);
       $rows_center = round($this->_rows/2);
-
       $columns_old_origin = $columns_center - round($columns_old/2);
       $rows_old_origin = $rows_center - round($rows_old/2);
 
@@ -92,7 +90,7 @@ class ImageGD
       $this->resizeImage($this->_columns, $this->_rows, $columns, $rows);
    }
 
-      public function __toString()
+   public function __toString()
    {
       ob_start();
          switch ($this->_type)
