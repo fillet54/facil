@@ -1,16 +1,16 @@
 <?php
-require('imageutilities.php');
+include ('ImageFacil.class.php');
 
-$fileName = '';
+$filename = '';
 
 /* Get Arguments */
 /* filename size, sizex, sizey, keepaspect */
 if (isset($_GET['filename']))
 {
-    $fileName = $_GET['filename'];    
+    $filename = $_GET['filename'];    
 }
 
-if (!file_exists($fileName))
+if (!file_exists($filename))
     return;
 
 /*if (isset($_GET['orientate']) && $_GET['orientate'] == 1)
@@ -20,7 +20,11 @@ if (!file_exists($fileName))
 
 if (isset($_GET['sizex']) && isset($_GET['sizey']))
 {
-    resizeImage($fileName, $_GET['sizex'], $_GET['sizey'], 'browser', null, false, true);
+   $image = new ImageFacil ($filename);
+   $image->cropThumbnailImage($_GET['sizex'], $_GET['sizey']);
+
+   header('Content-type: image/jpeg');
+   echo $image; 
 }
 
 ?>
