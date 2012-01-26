@@ -1,5 +1,7 @@
 <?php
 
+require ('ImageFacil.class.php');
+
 function filePathOkFor($filePath)
 {
    $currentPath = realpath($filePath) . '/';
@@ -60,7 +62,7 @@ function getFiles($filePath)
     return $files;
 }
 
-function getThumbnailUrl($filePath)
+function getThumbnailUrl($filePath, $width, $height)
 {   
     $image = '';
 
@@ -101,8 +103,33 @@ function getThumbnailUrl($filePath)
         }            
      }
 
-     return urlencode($image);
+     # Cache the image here
+     # assume cache is always enabled.
+     # getCachedUrl ()
+     return getCachedImageUrl($image, $width, $height);
 }       
+
+function getCachedImageUrl ($imagePath, $width, $height)
+{
+   $cachePath = "cache/" . $imagePath;
+
+   # If the image exists then lets return the image
+   if (!file_exists($cachePath))
+   {
+      $image = new ImageFacil ($imagePath);
+      $image->cropThumbnailImage($width, $height);
+
+      # Create the directory if it doesnt exist yet.
+      if (!file_exists(dirname($cachePath)))
+      {
+         mkdir(dirname($cachePath), 0777, true);
+      }
+
+      $image->save($cachePath);
+   }
+
+   return $cachePath;
+}
 
 function getFirstImageInDir($filePath)
 {
