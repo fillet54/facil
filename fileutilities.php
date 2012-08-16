@@ -58,7 +58,8 @@ function getFiles($filePath)
         $files[] = $file;
     }
     closedir($currentDirHandle);
-
+    
+    sort($files);
     return $files;
 }
 
